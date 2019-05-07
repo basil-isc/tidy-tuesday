@@ -1,14 +1,9 @@
----
-title: "student-teacher-ratios"
-author: "Basil"
-date: "5/7/2019"
-output: github_document
----
+student-teacher-ratios
+================
+Basil
+5/7/2019
 
-
-
-
-```{r, results = "hide", warning = FALSE}
+``` r
 ## load packages
 pacman::p_load(tidyverse,
                readr,
@@ -20,16 +15,28 @@ pacman::p_load(tidyverse,
 ## load the student teacher ratio data
 
 sr <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-05-07/student_teacher_ratio.csv")
+```
 
+    ## Parsed with column specification:
+    ## cols(
+    ##   edulit_ind = col_character(),
+    ##   indicator = col_character(),
+    ##   country_code = col_character(),
+    ##   country = col_character(),
+    ##   year = col_double(),
+    ##   student_ratio = col_double(),
+    ##   flag_codes = col_character(),
+    ##   flags = col_character()
+    ## )
 
+``` r
 ## obtained country and continents data from https://datahub.io/JohnSnowLabs/country-and-continent-codes-list
 ## Thanks to John Snow Labs for making this available
 ## load the country and continents data
 countries <- read.csv("../data/country-continents.csv") %>% janitor::clean_names()
 ```
 
-
-```{r warning = FALSE}
+``` r
 ## create subset of data containing only country level data
 ## and only for those countries that have data for the years 2013 and 2016
 srCntry <- 
@@ -45,11 +52,9 @@ srCntry <-
                     rename(country_code = three_letter_country_code) %>% 
                     select(c("country_code", "continent_code")),
               by = "country_code")
-              
 ```
 
-
-```{r warning = FALSE}
+``` r
 plotTT <- 
   srCntry %>% 
   spread(key = year, value = student_ratio) %>% 
@@ -98,11 +103,10 @@ plotTT <-
 ggdraw() +
   draw_image("../images/blackboard-green-clean.jpg", scale = 1.5) + 
   draw_plot(plotTT)  
-
-ggsave("../plots/19-05-07-student-teacher-ratio.png", width = 29, height = 21, units = "cm", dpi = "retina")
 ```
 
+![](19-05-07-student-teacher-ratios_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
-
-
-
+``` r
+ggsave("../plots/19-05-07-student-teacher-ratio.png", width = 29, height = 21, units = "cm", dpi = "retina")
+```
